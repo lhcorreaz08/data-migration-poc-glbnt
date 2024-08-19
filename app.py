@@ -11,11 +11,12 @@ app = Flask(__name__)
 CORS(app)
 
 # Configurar el cliente de Google Cloud Storage
-storage_client = storage.Client()
+#storage_client = storage.Client()
 
 # Get the environment variables
 app.config['DEBUG'] = os.environ.get('FLASK_DEBUG')
 
-@app.route('/')
+@app.route('/ping')
 def hello_world():
-    return 'Hello, World!'
+    return 'Pong!'
+

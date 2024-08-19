@@ -12,4 +12,6 @@ COPY . ./
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 app:app
+ENV PORT 5000
+
+CMD exec gunicorn --bind :5000 --workers 1 --threads 8 --timeout 0 app:app
