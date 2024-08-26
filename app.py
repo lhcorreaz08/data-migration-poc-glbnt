@@ -1,13 +1,15 @@
 from flask import Flask
 from flask_restful import Api
 from modelos import db
-from vistas import VistaEmployee, VistaDepartment, VistaJob
+from vistas import VistaEmployee, VistaDepartment, VistaJob, Pong
 
 app = Flask(__name__)
+
 
 # Actualiza la cadena de conexión con la nueva contraseña
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:Ericsson99@34.69.86.242:5432/postgres'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 
 # Inicializar la base de datos
 db.init_app(app)
@@ -23,7 +25,9 @@ api = Api(app)
 api.add_resource(VistaEmployee, '/employee')
 api.add_resource(VistaDepartment, '/department')
 api.add_resource(VistaJob, '/job')
+api.add_resource(Pong, '/ping')
+
 
 # Ejecutar la aplicación solo si se ejecuta este archivo directamente
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+#if __name__ == '__main__':
+#    app.run(debug=True, host='0.0.0.0', port=5000)

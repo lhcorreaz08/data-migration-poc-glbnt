@@ -1,6 +1,6 @@
-from flask import request, jsonify
+from flask import request
 from flask_restful import Resource
-from modelos import db, Employee, Department, Job, EmployeeSchema, DepartmentSchema, JobSchema
+from modelos import db,  EmployeeSchema, DepartmentSchema, JobSchema
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
 
@@ -49,3 +49,7 @@ class VistaJob(Resource):
             return {"message": "Integrity error occurred"}, 409
         except ValidationError as err:
             return err.messages, 400
+        
+class Pong(Resource):
+    def get(self):
+        return {"message": "Pong!"}, 200
