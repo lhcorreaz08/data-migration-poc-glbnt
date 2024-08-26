@@ -29,6 +29,9 @@ class Job(db.Model):
 
 # Esquemas para serialización y deserialización
 class EmployeeSchema(SQLAlchemyAutoSchema):
+    department_id = fields.Integer(required=True)
+    job_id = fields.Integer(required=True)
+    
     class Meta:
         model = Employee
         include_relationships = True
