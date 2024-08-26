@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import fields, Schema
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from sqlalchemy import TIMESTAMP
 
 db = SQLAlchemy()
 
@@ -9,7 +10,7 @@ class Employee(db.Model):
     __tablename__ = 'employees'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
-    datetime = db.Column(db.DateTime, nullable=False)
+    datetime = db.Column(db.String(128), nullable=False)
     department_id = db.Column(db.Integer, db.ForeignKey('departments.id'), nullable=False)
     job_id = db.Column(db.Integer, db.ForeignKey('jobs.id'), nullable=False)
 
@@ -30,7 +31,7 @@ class Job(db.Model):
 # Esquemas para serialización y deserialización
 class EmployeeSchema(SQLAlchemyAutoSchema):
     department_id = fields.Integer(required=True)
-    job_id = fields.Integer(required=True)
+    job_id = fields.Integer(required=True, allow_none=True)
     
     class Meta:
         model = Employee

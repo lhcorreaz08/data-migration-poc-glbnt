@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 from modelos import db
-from vistas import VistaEmployee, VistaDepartment, VistaJob, Pong
+from vistas import VistaEmployee, VistaDepartment, VistaJob, Pong, LoadHistEmployee, LoadHistDepartment, LoadHistJob
 
 app = Flask(__name__)
 
@@ -26,8 +26,9 @@ api.add_resource(VistaEmployee, '/employee')
 api.add_resource(VistaDepartment, '/department')
 api.add_resource(VistaJob, '/job')
 api.add_resource(Pong, '/ping')
+api.add_resource(LoadHistEmployee, '/load-hist-employee')
+api.add_resource(LoadHistJob, '/load-hist-job')
+api.add_resource(LoadHistDepartment, '/load-hist-department')
 
 
-# Ejecutar la aplicación solo si se ejecuta este archivo directamente
-#if __name__ == '__main__':
-#    app.run(debug=True, host='0.0.0.0', port=5000)
+
