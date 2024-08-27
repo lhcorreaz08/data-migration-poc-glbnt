@@ -2,11 +2,12 @@ import fastavro
 from google.cloud import storage
 import csv
 from io import StringIO, BytesIO
-from flask import request
+from flask import request, jsonify
 from flask_restful import Resource
 from modelos import db,  EmployeeSchema, DepartmentSchema, JobSchema, Employee, Department, Job
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import text
 from datetime import datetime
 
 
@@ -430,3 +431,90 @@ class RestoreEmployees(Resource):
 
 
 
+class EmployeesHiredByQuarter(Resource):
+    def get(self):
+        query = text("""
+            SELECT
+                d.department,
+                j.job,
+                SUM(CASE WHEN EXTRACT(QUARTER FROM TO_TIMESTAMP(e.datetime, 'YYYY-MM-DD"T"HH24:MI:SS"Z"')) = 1 THEN 1 ELSE 0 END) AS Q1,
+                SUM(CASE WHEN EXTRACT(QUARTER FROM TO_TIMESTAMP(e.datetime, 'YYYY-MM-DD"T"HH24:MI:SS"Z"')) = 2 THEN 1 ELSE 0 END) AS Q2,
+                SUM(CASE WHEN EXTRACT(QUARTER FROM TO_TIMESTAMP(e.datetime, 'YYYY-MM-DD"T"HH24:MI:SS"Z"')) = 3 THEN 1 ELSE 0 END) AS Q3,
+                SUM(CASE WHEN EXTRACT(QUARTER FROM TO_TIMESTAMP(e.datetime, 'YYYY-MM-DD"T"HH24:MI:SS"Z"')) = 4 THEN 1 ELSE 0 END) AS Q4
+            FROM
+                public.employees e
+            JOIN
+                public.departments d ON e.department_id = d.id
+            JOIN
+                public.jobs j ON e.job_id = j.id
+            WHERE
+                EXTRACT(YEAR FROM TO_TIMESTAMP(e.datetime, 'YYYY-MM-DD"T"HH24:MI:SS"Z"')) = 2021
+            GROUP BY
+                d.department, j.job
+            ORDER BY
+                d.department ASC, j.job ASC;
+        """)
+        
+        result = db.session.execute(query)
+        data = []
+        
+        for row in result:
+            data.append({
+                "department": row.department,
+                "job": row.job,
+                "Q1": row.q1,
+                "Q2": row.q2,
+                "Q3": row.q3,
+                "Q4": row.q4,
+            })
+        
+        return jsonify(data)
+    
+    
+class DepartmentsAboveAverageHires(Resource):
+    def get(self):
+        query = text("""
+        WITH department_hires AS (
+            SELECT
+                e.department_id AS id,
+                d.department,
+                COUNT(e.id) AS hired
+            FROM
+                employees e
+            JOIN
+                departments d ON e.department_id = d.id
+            WHERE
+                EXTRACT(YEAR FROM TO_TIMESTAMP(e.datetime, 'YYYY-MM-DD"T"HH24:MI:SS"Z"')) = 2021
+            GROUP BY
+                e.department_id, d.department
+        ),
+        average_hires AS (
+            SELECT
+                AVG(hired) AS avg_hires
+            FROM
+                department_hires
+        )
+        SELECT
+            dh.id,
+            dh.department,
+            dh.hired
+        FROM
+            department_hires dh,
+            average_hires ah
+        WHERE
+            dh.hired > ah.avg_hires
+        ORDER BY
+            dh.hired DESC;
+        """)
+        
+        result = db.session.execute(query)
+        data = []
+        
+        for row in result:
+            data.append({
+                "id": row.id,
+                "department": row.department,
+                "hired": row.hired
+            })
+        
+        return jsonify(data)
