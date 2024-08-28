@@ -123,6 +123,13 @@ La aplicación está desplegada en Google Cloud Run y está accesible en la sigu
 [https://globant-challenge-22-qmij3rko2a-ue.a.run.app](https://globant-challenge-22-qmij3rko2a-ue.a.run.app/ping)
 
 
+## Visualización de Datos
+
+Puedes visualizar los datos utilizando Looker Studio en el siguiente enlace:
+
+[https://lookerstudio.google.com/reporting/7b83e710-738b-4544-8801-09191d9acf11](https://lookerstudio.google.com/reporting/7b83e710-738b-4544-8801-09191d9acf11)
+
+
 docker build -t api_service .
 
 docker run -e PORT=5000 -p 5000:5000 api_service
