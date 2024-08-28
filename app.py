@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 from modelos import db
-from vistas import VistaEmployee, VistaDepartment, VistaJob, Pong, LoadHistEmployee, LoadHistDepartment, LoadHistJob, SnapshotJob, SnapshotDepartment, SnapshotEmployee, RestoreJobs, RestoreDepartments, RestoreEmployees
+from vistas import *
 
 app = Flask(__name__)
 
@@ -23,7 +23,7 @@ api = Api(app)
 
 # Registrar las rutas y sus vistas
 api.add_resource(Pong, '/ping')
-0
+
 api.add_resource(VistaEmployee, '/employee')
 api.add_resource(VistaDepartment, '/department')
 api.add_resource(VistaJob, '/job')
@@ -40,3 +40,5 @@ api.add_resource(RestoreJobs, '/restore-jobs')
 api.add_resource(RestoreDepartments, '/restore-departments')
 api.add_resource(RestoreEmployees, '/restore-employees')
 
+api.add_resource(EmployeesHiredByQuarter, '/employees-hired-by-quarter')
+api.add_resource(DepartmentsAboveAverageHires, '/departments-above-average-hires')
