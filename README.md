@@ -120,7 +120,7 @@ La API está diseñada para interactuar con datos almacenados en Google Cloud St
 
 La aplicación está desplegada en Google Cloud Run y está accesible en la siguiente URL:
 
-[https://globant-challenge-22-qmij3rko2a-ue.a.run.app](https://globant-challenge-22-qmij3rko2a-ue.a.run.app)
+[https://globant-challenge-22-qmij3rko2a-ue.a.run.app](https://globant-challenge-22-qmij3rko2a-ue.a.run.app/ping)
 
 
 docker build -t api_service .
