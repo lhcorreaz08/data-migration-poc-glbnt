@@ -23,7 +23,7 @@ api = Api(app)
 
 # Registrar las rutas y sus vistas
 api.add_resource(Pong, '/ping')
-0
+
 api.add_resource(VistaEmployee, '/employee')
 api.add_resource(VistaDepartment, '/department')
 api.add_resource(VistaJob, '/job')
