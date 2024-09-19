@@ -9,7 +9,7 @@ WORKDIR $APP_HOME
 COPY . ./
 
 # Upgrade pip and install dependencies from requirements.txt
-RUN pip install --no-cache-dir --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip 
+RUN pip install --no-cache-dir -r requirements.txt --root-user-action=ignore
 
 CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 app:app
